@@ -1,67 +1,67 @@
 let name = '';
 let game = {};
 let panel = 'start';
-let $ = function(domElement) {return document.querySelector(domElement); }
+let $ = function(domElement) { return document.querySelector(domElement); }
 
 let nav = () => {
     document.onclick = (event) => {
         event.preventDefault();
-        switch(event.path[0].id) {
+        switch(event.path[0].id){
             case "startGame":
-                go('game','d-block');
+                go('game', 'd-block');
                 break;
-                case "restart":
-                    go('game', 'd-bloock');
-                    for(let child of $('.elements').querySelectorAll(".element")) {
-                        child.remove();
-                    }
-                    break;
+            case "restart":
+                go('game', 'd-block');
+                for(let child of $('.elements').querySelectorAll(".element")) {
+                    child.remove();
+                }
+                break;
         }
     }
 }
-
 let startLoop = () => {
     let inter = setInterval(() => {
-        if(panel !== "start") clearInterval(inter);
+        if(panel !=="start") clearInterval(inter);
         checkName();
-    },100)
+    }, 100)
 }
-
 let checkName = () => {
     name = $('#nameInput').value.trim();
-    if(name !== '') {
+    if(name !== ''){
         localStorage.setItem('userName', name);
         $('#startGame').removeAttribute('disabled');
     } else $('#startGame').setAttribute('disabled', 'disabled');
 }
-
-
-let go = (page,attribute) => {
-    let pages = ['start', 'game','end'];
+let go = (page, attribute) => {
+    let pages = ['start', 'game', 'end'];
     panel = page;
-    $(`#${page}`).setAttribute('class',attribute);
+    $(`#${page}`).setAttribute('class', attribute);
     pages.forEach(e => {
-        if(page !== e) {
-            $(`#${e}`).setAttribute('class','d-none');
+        if(page !== e){
+            $(`#${e}`).setAttribute('class', 'd-none');
         }
     })
 }
-
 let checkStorage = () => {
     if(localStorage.getItem('userName') !== null) {
         $('#nameInput').value = localStorage.getItem('userName');
     }
 }
-
 window.onload = () => {
     checkStorage();
     nav();
     startLoop();
     setInterval(() => {
-        if(panel === "game"){
-        game = new Game();
-        game.start();
-        panel = "game process";
+        if (panel === "game"){
+            game = new Game();
+            game.start();
+            panel = "game process";
         }
-    })
+    }, 500)
+}
+
+let random = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
 }
